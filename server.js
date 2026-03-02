@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const connectDb = require('./Config/database.js')
 
 app.use(express.json())
 
@@ -67,8 +68,10 @@ app.get('/Freddie', (req, res)=>{
 
 app.listen(3000, async()=>{
     try{
+        await connectDb()
     console.log("Server running on port 3000")
     } catch (error) {
         console.log("Error starting server:", error)
     }
 })
+
