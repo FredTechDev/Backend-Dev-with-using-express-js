@@ -1,5 +1,6 @@
 // const users = require('../models/users')
 const user = require('../models/users')
+const mongoose = require('mongoose')
 const register = async(req,res)=>{
 console.log("wozaa am bitting up")
     try{

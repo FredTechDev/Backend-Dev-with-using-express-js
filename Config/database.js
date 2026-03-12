@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const MONGOURL = 'mongodb+srv://fred:pass1234@cluster0.xdkucdd.mongodb.net/backend?retryWrites=true&w=majority'
+const MONGOURL = 'mongodb+srv://fred:pass1234@cluster0.xdkucdd.mongodb.net/now'
 
 const connectDb = async () => {
     try {
