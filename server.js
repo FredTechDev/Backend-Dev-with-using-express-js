@@ -1,40 +1,18 @@
 const express = require('express')
 const app = express()
-const connectDb = require('./Config/database.js')
-
+const connectDb = require('./Config/database')
+const morgan = require ('morgan')
+const userRoutes =  require('./routes/userRoutes')
+const port = 3000
 app.use(express.json())
+app.use(morgan("dev"))
 
-//user creation
-app.post('./routes/apis/users', async(req,res)=>{
-    try{
-        const user = new user(req.body);
-        await user.save();
-        res.status(201).json(User);
-    }catch(error) {
-        res.status(400).json({
-            error: error.message
-        })
-    }
-})
-
-//products creation
-app.post('./routes/apis/products',async(req,res)=>{
-    try{
-        const products = new product(req.body)
-        await product.save();
-        res.status(201).json(products);
-
-    } catch(error){
-        res.status(400).json({
-            error: error.message
-        })
-    }
-})
+app.use('/api/v1', userRoutes)
 
 app.listen(3000, async()=>{
     try{
         await connectDb()
-    console.log("Server running on port 3000")
+    console.log(`Server running on port, ${port}`)
     } catch (error) {
         console.log("Error starting server:", error)
     }

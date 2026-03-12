@@ -1,10 +1,15 @@
-const users = require('../models/users')
+// const users = require('../models/users')
 const user = require('../models/users')
-
 const register = async(req,res)=>{
+console.log("wozaa am bitting up")
     try{
+        console.log("Data are connecting ready to send")
+
         const {name,email,password} = req.body
-        const newUser =  await user({
+        console.log(req.body)
+        console.log("Request body:", req.body)
+console.log("Database connected:", mongoose.connection.readyState)
+        const newUser = new user({
             name,email,password
         })
 
