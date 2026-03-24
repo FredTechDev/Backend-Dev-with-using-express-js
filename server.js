@@ -1,9 +1,10 @@
 const express = require('express')
-const mongoose = require('mongoose')
+//const mongoose = require('mongoose')
 const app = express()
 const connectDb = require('./Config/database')
 const morgan = require ('morgan')
 const userRoutes =  require('./routes/userRoutes')
+
 const port = 4000
 app.use(express.json())
 app.use(morgan("dev"))

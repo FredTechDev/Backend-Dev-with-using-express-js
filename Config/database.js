@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
-
-const MONGOURL = 'mongodb+srv://fred:pass1234@cluster0.xdkucdd.mongodb.net/now'
+const MONGOURL = 'mongodb://localhost:27017/practicedb'
 
 const connectDb = async () => {
     try {
