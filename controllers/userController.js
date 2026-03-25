@@ -11,11 +11,9 @@ const register = async(req,res)=>{
                 message : "Please fill all the fields"
             })
         }
-
-
         const existingUser = await user.findOne({email})
         if(existingUser){
-            return res.status.json({message:"User already exists"})
+            return res.status(400).json({message:"User already exists"})
         }
         const newUser =await new user({
             name,email,password
@@ -34,13 +32,14 @@ const register = async(req,res)=>{
     } catch(error){
         console.log('registration failed',error)
         res.status(500).json({
-            message : "Server Dead!!"
+            message : "Server error"
         })
     }
 }
 
 const login = async(req,res)=>{
     try{
+        //confirm if user has entered all the details
         const{email,password}=req.body
         if(!email || !password){
             return res.status(400).json({
@@ -48,22 +47,47 @@ const login = async(req,res)=>{
             })
         }
 
+        //check if email exists in the database
+
         const userdb = await user.findOne({email})
             if(!userdb){
-                return res.status.json({message:"User not found"})
+                return res.status(404).json({
+                    message:"User not found"
+                })
             }
-            await user.save()
-            res.json({
-                message:"Login successful"
-            }
+        //confirm if password is same to that in the database
+        const isMatch = await userdb.comparePassword(password)
+        if(!isMatch){
+            return res.status(400).json({
+                message:"Invalid credentials"
+            })
+        }
 
-        )
+        res.status(200).json({
+            message:"Login successful"
+        })
+
     }catch(error){
         console.log("User login failed",error)
         res.status(500).json({
-            message:"server dead"
+            message:"Server error"
         })
     }
 }
 
-module.exports = {register}
+const userById = async (req, res) => {
+  try {
+    const user = await user.findById(req.params.id); 
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = {register, login, userById}
