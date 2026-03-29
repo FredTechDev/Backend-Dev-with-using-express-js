@@ -56,15 +56,16 @@ const login = async(req,res)=>{
                 })
             }
         //confirm if password is same to that in the database
-        const isMatch = await userdb.comparePassword(password)
-        if(!isMatch){
-            return res.status(400).json({
-                message:"Invalid credentials"
-            })
-        }
+        // const isMatch = await userdb.comparePassword(password)
+        // if(!isMatch){
+        //     return res.status(400).json({
+        //         message:"Invalid credentials"
+        //     })
+        // }
 
         res.status(200).json({
-            message:"Login successful"
+            message:"Login successful",
+            user
         })
 
     }catch(error){
@@ -77,13 +78,13 @@ const login = async(req,res)=>{
 
 const userById = async (req, res) => {
   try {
-    const user = await user.findById(req.params.id); 
+    const userone = await user.findById(req.params.id); 
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    return res.status(200).json(user);
+    return res.status(200).json(userone,user);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
@@ -92,7 +93,7 @@ const userById = async (req, res) => {
 
 const deleteuser = async (req, res) => {
   try {
-    const user = await user.findByIdAndDelete(req.params.id);
+    const userone = await user.findByIdAndDelete(req.params.id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
