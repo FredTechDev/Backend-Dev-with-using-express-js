@@ -1,7 +1,9 @@
 const user = require('../models/users')
 const mongoose = require('mongoose')
+const {hashPassword,comparePassword} = require('../utils/hash')
+const generateToken = require('../utils/token')
 const register = async(req,res)=>{    
-
+    
     try{
         const {name,email,password} = req.body
 
@@ -15,14 +17,14 @@ const register = async(req,res)=>{
         if(existingUser){
             return res.status(400).json({message:"User already exists"})
         }
+        const hash = await hashPassword(password) 
+
         const newUser =await new user({
-            name,email,password
+            name,email,password:hash
             
         })
-        
-
         await newUser.save()
-        res.json({message:"User registered successfully"})
+        res.json({message:"User registered successfully",newUser})
 
         res.status(201).json({
             message : "User created successfully",
@@ -55,14 +57,6 @@ const login = async(req,res)=>{
                     message:"User not found"
                 })
             }
-        //confirm if password is same to that in the database
-        // const isMatch = await userdb.comparePassword(password)
-        // if(!isMatch){
-        //     return res.status(400).json({
-        //         message:"Invalid credentials"
-        //     })
-        // }
-
         res.status(200).json({
             message:"Login successful",
             user
@@ -106,4 +100,19 @@ const deleteuser = async (req, res) => {
   }
 };
 
-module.exports = {register, login, userById, deleteuser}
+const profile = async(req,res)=>{
+    try{
+        const userone = await user.findById(req.user.id).select('password')
+        if(!user){
+            res.status(404).json({message:"user not found"})
+        }
+
+        res.json(user)
+
+    }catch(error){
+       res.status(500).json({message:"server not responding"}) 
+    }
+}
+
+
+module.exports = {register, login, userById, deleteuser,profile}

@@ -12,7 +12,7 @@ const validationHelper = async(req,res)=>{
     }   
 
     if(!email.includes('@')){
-        res.status()
+        res.status(400).json({message:"Email has to include @ character"})
     }
 }
 
